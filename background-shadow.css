@@ -6,21 +6,17 @@
  * </div>
  */
 
+ /**
+  * Feedback:
+  * We can get the same result without background-shadow and make code less
+ */
+
 .box {
   display: block;
-  position: relative;
-}
-
-.background-shadow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease-out;
 }
 
-.box:hover .background-shadow {
+.box:hover {
   box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.3);
 }

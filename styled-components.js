@@ -4,12 +4,15 @@
  */
 import styled from 'styled-components';
 
-const ProfilePicutre = styled.div`
-  background-image: url(${props => props.src});
-  background-size: cover;
-  height: 50px;
-  width: 50px;
-`;
+const ProfilePicutre = styled.div.attrs({
+    style: props => ({
+      backgroundImage: `url('${props.src}')`,
+    }),
+  })`
+    background-size: cover;
+    height: 50px;
+    width: 50px;
+  `;
 
 const UserProfile = ({ name, picture }) => (
   <div>

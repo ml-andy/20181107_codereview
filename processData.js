@@ -2,42 +2,46 @@
  * Just a simple data processing flow
  */
 
+/**
+  * Feedback:
+  * We can use pipe function to make flow more flexible.
+  * appendIsAwesome should use .map to aviod side effect
+  * excludeContinousCharsInName's name should add initial value to aviod the data without name key
+  * and use .reduce to make code better.
+ */
+
 const data = [
   { name: 'jack', score: 87 },
   { name: 'arthur', score: 101 },
   { name: 'phyllis', score: Math.random() * 100 },
 ];
 
-const sortByScore = (data) => {
-  return data.sort((a, b) => a.score - b.score);
-}
+const sortByScore = data => data.sort((a, b) => a.score - b.score);
 
-const excludeContinousCharsInName = (data) => {
-  return data.filter(({ name }) => {
-    const chars = name.split('');
+const excludeContinousCharsInName = data => (
+  data.filter(({ name = '' }) => (
+    name.split('')
+      .reduce((res,_,idx,ary) => (
+        res ? !(ary[idx] === ary[idx - 1]) : false
+      ), true)
+  ))
+);
 
-    for (let i = 1; i < chars.length; i += 1) {
-      if (chars[i] === chars[i - 1]) {
-        return false;
-      }
-    }
+const appendIsAwesome = data => (
+  data.map(item => (
+    item.name === 'jack'
+      ? { ...item, isAwesome: true }
+      : item
+  ))
+);
 
-    return true;
-  })
-};
+const pipe = (firstFn, ...moreFn) =>
+    moreFn.reduce((acc,curr) => (...arg) => curr(acc(...arg)), firstFn);
 
-const appendIsAwesome = (data) => {
-  const jack = data.find(item => item.name === 'jack');
-
-  jack.isAwesome = true;
-
-  return data;
-};
-
-const ans = [
+const ans = pipe(
   sortByScore,
   excludeContinousCharsInName,
   appendIsAwesome,
-].reduce((result, fn) => fn(result), data);
+)(data);
 
 console.log(ans);
